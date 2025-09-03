@@ -59,14 +59,14 @@ while True:
             # Take middle image
             index = int(len(all_images) / 2);
             image_with_object = all_images[index];
-            
+
     # fill status list array
     status_list.append(status);
     status_list = status_list[-2];
 
     #if first 1 second 0 object are leave
     if status_list[0] == 1 and status_list[1] == 0:
-        send_email();
+        send_email(image_with_object);
 
     cv2.imshow("My video", frame);
     # CReating key object
