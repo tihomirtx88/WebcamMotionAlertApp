@@ -4,6 +4,7 @@ import glob;
 from emailing import send_email
 import cv2
 import os
+from threading import Thread
 
 # Start video camera
 video = cv2.VideoCapture(0);
@@ -72,8 +73,12 @@ while True:
 
     #if first 1 second 0 object are leave
     if status_list[0] == 1 and status_list[1] == 0:
-        send_email(image_with_object);
-        clean_folder();
+        email_thread = Thread(target=send_email, args=image_with_object);
+        email_thread.daemon = True;
+        clean_thread = Thread(target=clean_folder);
+        clean_thread.daemon = True;
+
+        email_thread.start();
 
     cv2.imshow("My video", frame);
     # CReating key object
@@ -83,5 +88,6 @@ while True:
         break;
 
 video.release();
+clean_thread();
 
 
